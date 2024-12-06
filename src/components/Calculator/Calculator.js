@@ -18,12 +18,12 @@ const Calculator = () => {
       setResult(null);
     } else if (value === 'x²') {
       try {
-        const evalResult = Math.pow(eval(expression), 2);
+        const evalResult = Math.pow(parseFloat(expression), 2);
         setResult(evalResult);
       } catch {
         setResult('Error');
       }
-    } else if (value === 'sin' || value === 'cos' || value === 'tan' || value === 'log') {
+    } else if (['sin', 'cos', 'tan', 'log', 'sin⁻¹', 'cos⁻¹', 'tan⁻¹'].includes(value)) {
       try {
         const angleInRadians = parseFloat(expression) * (Math.PI / 180); // Convert to radians
         let evalResult;
@@ -41,6 +41,15 @@ const Calculator = () => {
           case 'log':
             evalResult = Math.log10(parseFloat(expression));
             break;
+          case 'sin⁻¹':
+            evalResult = Math.asin(parseFloat(expression)) * (180 / Math.PI); // Return in degrees
+            break;
+          case 'cos⁻¹':
+            evalResult = Math.acos(parseFloat(expression)) * (180 / Math.PI); // Return in degrees
+            break;
+          case 'tan⁻¹':
+            evalResult = Math.atan(parseFloat(expression)) * (180 / Math.PI); // Return in degrees
+            break;
           default:
             evalResult = 'Error';
         }
@@ -49,9 +58,53 @@ const Calculator = () => {
       } catch {
         setResult('Error');
       }
+    } else if (value === 'n!') {
+      try {
+        const num = parseInt(expression);
+        if (num < 0) {
+          setResult('Error'); // Factorial is undefined for negative numbers
+        } else {
+          let factorial = 1;
+          for (let i = 1; i <= num; i++) {
+            factorial *= i;
+          }
+          setResult(factorial);
+        }
+      } catch {
+        setResult('Error');
+      }
+    } else if (value === 'ln') {
+      try {
+        const evalResult = Math.log(parseFloat(expression)); // Natural logarithm (log base e)
+        setResult(evalResult);
+      } catch {
+        setResult('Error');
+      }
+    } else if (value === '10ˣ') {
+      try {
+        const evalResult = Math.pow(10, parseFloat(expression)); // 10^x
+        setResult(evalResult);
+      } catch {
+        setResult('Error');
+      }
+    } else if (value === 'y√x') {
+      try {
+        const [root, base] = expression.split('√');
+        const evalResult = Math.pow(parseFloat(base), 1 / parseFloat(root)); // y√x
+        setResult(evalResult);
+      } catch {
+        setResult('Error');
+      }
+    } else if (value === '³√x') {
+      try {
+        const evalResult = Math.cbrt(parseFloat(expression)); // Cube root
+        setResult(evalResult);
+      } catch {
+        setResult('Error');
+      }
     } else if (value === '=') {
       try {
-        const evalResult = Function(`return ${expression}`)();
+        const evalResult = Function('return ' + expression)();
         setResult(evalResult);
       } catch {
         setResult('Error');

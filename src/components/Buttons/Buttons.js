@@ -8,14 +8,15 @@ const Buttons = ({ onInput }) => {
     ['1', '2', '3', '-'],
     ['0', '.', '=', '+'],
     ['sin', 'cos', 'tan', 'log'],
-    ['x²', 'π', 'DEL', 'ON'],
-    ['C', 'SHIFT']
+    ['sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'n!'],
+    ['ln', '10ˣ', 'y√x', '³√x'],
+    ['π', 'DEL', 'C', 'SHIFT']
   ];
 
   return (
     <div className="buttons-grid">
       {buttonValues.map((row, rowIndex) => (
-        <div key={rowIndex} className={rowIndex === 4 ? 'advanced-buttons' : ''}>
+        <div key={rowIndex} className={rowIndex >= 4 ? 'advanced-buttons' : ''}>
           {row.map((value) => (
             <Button key={value} value={value} onClick={onInput} />
           ))}
